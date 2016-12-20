@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * GKislin
@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class MealWithExceed {
 
-    private static AtomicLong counter = new AtomicLong(0);
-    private final long id;
+    private static AtomicInteger counter = new AtomicInteger(0);
+    private final int id;
 
     private final LocalDateTime dateTime;
 
@@ -52,5 +52,9 @@ public class MealWithExceed {
 
     public boolean isExceed() {
         return exceed;
+    }
+
+    public int getId() {
+        return id;
     }
 }

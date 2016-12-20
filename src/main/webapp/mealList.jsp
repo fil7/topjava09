@@ -12,6 +12,9 @@
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 </head>
 <body>
+
+<%--<jsp:forward page="/meals?action=listMealWithExceed" />--%>
+
 <h2><a href="index.html">Home</a></h2>
 <h2>Meal list</h2>
 <div class="col-md-6">
@@ -30,6 +33,7 @@
             <th>
                 <c:out value="Calories"/>
             </th>
+            <th colspan=2>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -48,6 +52,8 @@
                 <td>
                     <c:out value="${meal.getCalories()}"/>
                 </td>
+                <td><a href="meals?action=edit&id=<c:out value="${meal.id}"/>">Update</a></td>
+                <td><a href="meals?action=delete&id=<c:out value="${meal.id}"/>">Delete</a></td>
             </tr>
         </c:forEach>
         </tbody>
