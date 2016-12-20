@@ -34,14 +34,7 @@
         </thead>
         <tbody>
         <c:forEach items="${meals}" var="meal" varStatus="loop">
-            <c:choose>
-                <c:when test="${meal.isExceed()}">
-                    <c:set var="isExceed" value="red" />
-                </c:when>
-                <c:otherwise>
-                    <c:set var="isExceed" value="green" />
-                </c:otherwise>
-            </c:choose>
+            <c:set var="isExceed" value="${meal.isExceed() ? 'red' : 'green'}" />
             <tr class="${isExceed}">
                 <td>
                     <c:out value="${f:formatLocalDateTime(meal.getDateTime(), 'dd.MM.yyyy')}"/>
