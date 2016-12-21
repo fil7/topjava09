@@ -6,11 +6,9 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.DbUtil;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static ru.javawebinar.topjava.util.TimeUtil.convertToDate;
-import static ru.javawebinar.topjava.util.TimeUtil.convertToLocalDateTime;
 
 /**
  * Dao stands for Data Access Object.
@@ -27,6 +25,7 @@ public class MealDao implements Dao<Meal, Integer> {
     }
 
     public enum MealsTable {
+        TABLE("meals"),
         ID("id"),
         DATETIME("dateTime"),
         DESCRIPTION("description"),
@@ -51,11 +50,12 @@ public class MealDao implements Dao<Meal, Integer> {
             PreparedStatement statement = connection
                     .prepareStatement("INSERT INTO meals(dateTime,description,calories) VALUES (?,?,?)");
             // Parameters start with 1
-            statement.setDate(1,
-                    new java.sql.Date(convertToDate(meal.getDateTime()).getTime()));
+            Timestamp timestamp = Timestamp.valueOf(meal.getDateTime());
+            statement.setTimestamp(1, timestamp);
             statement.setString(2, meal.getDescription());
             statement.setInt(3, meal.getCalories());
             statement.executeUpdate();
+            statement.close();
         } catch (SQLException e) {
             logger.warn("Failed to add new Meal: " + meal.getId());
         }
@@ -68,6 +68,7 @@ public class MealDao implements Dao<Meal, Integer> {
                     .prepareStatement("DELETE FROM meals WHERE id=?");
             statement.setInt(1, mealId);
             statement.executeUpdate();
+            statement.close();
         } catch (SQLException e) {
             logger.warn("Failed to delete Meal: " + mealId);
         }
@@ -80,13 +81,13 @@ public class MealDao implements Dao<Meal, Integer> {
                     .prepareStatement("UPDATE meals SET dateTime=?, description=?, calories=? " +
                             "WHERE id=?");
             // Parameters start with 1
-            statement.setDate(1,
-                    new java.sql.Date(convertToDate(meal.getDateTime()).getTime())
-            );
+            Timestamp timestamp = Timestamp.valueOf(meal.getDateTime());
+            statement.setTimestamp(1, timestamp);
             statement.setString(2, meal.getDescription());
             statement.setInt(3, meal.getCalories());
             statement.setInt(4, meal.getId());
             statement.executeUpdate();
+            statement.close();
         } catch (SQLException e) {
             logger.warn("Failed to update Meal: " + meal.getId());
         }
@@ -102,6 +103,7 @@ public class MealDao implements Dao<Meal, Integer> {
                 Meal meal = getMealFromResultSet(result);
                 meals.add(meal);
             }
+            statement.close();
         } catch (SQLException e) {
             logger.warn("Failed to get list of Meals");
         }
@@ -120,6 +122,7 @@ public class MealDao implements Dao<Meal, Integer> {
             if (result.next()) {
                 meal = getMealFromResultSet(result);
             }
+            statement.close();
 
         } catch (SQLException e) {
             logger.warn("Failed to get meal by id: " + mealId);
@@ -129,10 +132,13 @@ public class MealDao implements Dao<Meal, Integer> {
 
     private Meal getMealFromResultSet(ResultSet result) throws SQLException {
         int id = result.getInt("id");
-        java.util.Date date = result.getTimestamp("dateTime");
+        Timestamp  timestamp = result.getTimestamp("dateTime");
+        LocalDateTime ldt = timestamp.toLocalDateTime();
         String description = result.getString("description");
         int calories = result.getInt("calories");
-        Meal meal = new Meal(id, convertToLocalDateTime(date), description, calories);
+        Meal meal = new Meal(id, ldt, description, calories);
         return meal;
     }
+
+
 }

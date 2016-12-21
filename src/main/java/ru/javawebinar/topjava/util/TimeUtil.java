@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.util;
 
-import java.time.*;
-import java.util.Date;
+import java.time.LocalTime;
 
 /**
  * GKislin
@@ -12,13 +11,4 @@ public class TimeUtil {
         return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) <= 0;
     }
 
-    public static LocalDateTime convertToLocalDateTime(Date date) {
-        Instant instant = Instant.ofEpochMilli(date.getTime());
-        return LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
-    }
-
-    public static Date convertToDate(LocalDateTime ldt) {
-        Instant instant = ldt.toInstant(ZoneOffset.UTC);
-        return Date.from(instant);
-    }
 }
