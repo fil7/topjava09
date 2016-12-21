@@ -55,9 +55,12 @@
                 <td><a href="meals?action=edit&id=<c:out value="${meal.id}"/>">Update</a></td>
                 <td><a href="meals?action=delete&id=<c:out value="${meal.id}"/>">Delete</a></td>
             </tr>
+
         </c:forEach>
         </tbody>
     </table>
+
+    <p><a href="meals?action=insert">Add User</a></p>
 </div>
 
 </body>

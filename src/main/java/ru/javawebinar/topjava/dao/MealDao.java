@@ -9,7 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.javawebinar.topjava.util.MealsUtil.convertDate;
+import static ru.javawebinar.topjava.util.TimeUtil.convertToDate;
+import static ru.javawebinar.topjava.util.TimeUtil.convertToLocalDateTime;
 
 /**
  * Dao stands for Data Access Object.
@@ -50,7 +51,8 @@ public class MealDao implements Dao<Meal, Integer> {
             PreparedStatement statement = connection
                     .prepareStatement("INSERT INTO meals(dateTime,description,calories) VALUES (?,?,?)");
             // Parameters start with 1
-            statement.setDate(1, new java.sql.Date(meal.getDate().toEpochDay()));
+            statement.setDate(1,
+                    new java.sql.Date(convertToDate(meal.getDateTime()).getTime()));
             statement.setString(2, meal.getDescription());
             statement.setInt(3, meal.getCalories());
             statement.executeUpdate();
@@ -78,7 +80,9 @@ public class MealDao implements Dao<Meal, Integer> {
                     .prepareStatement("UPDATE meals SET dateTime=?, description=?, calories=? " +
                             "WHERE id=?");
             // Parameters start with 1
-            statement.setDate(1, new java.sql.Date(meal.getDate().toEpochDay()));
+            statement.setDate(1,
+                    new java.sql.Date(convertToDate(meal.getDateTime()).getTime())
+            );
             statement.setString(2, meal.getDescription());
             statement.setInt(3, meal.getCalories());
             statement.setInt(4, meal.getId());
@@ -128,7 +132,7 @@ public class MealDao implements Dao<Meal, Integer> {
         java.util.Date date = result.getTimestamp("dateTime");
         String description = result.getString("description");
         int calories = result.getInt("calories");
-        Meal meal = new Meal(id, convertDate(date), description, calories);
+        Meal meal = new Meal(id, convertToLocalDateTime(date), description, calories);
         return meal;
     }
 }

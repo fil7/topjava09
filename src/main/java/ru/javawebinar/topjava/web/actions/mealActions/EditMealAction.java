@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 public class EditMealAction implements Action<Meal, Integer> {
     @Override
     public void execute(Dao<Meal, Integer> dao, HttpServletRequest request, HttpServletResponse response) {
-        int mealId = Integer.parseInt(request.getParameter("id"));
+//        if (isEmptyParam("id", request)) {
+//            return;
+//        }
+        Integer mealId = Integer.parseInt(request.getParameter("id"));
         Meal meal = dao.read(mealId);
         request.setAttribute("meal", meal);
     }
+
 }

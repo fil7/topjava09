@@ -3,6 +3,9 @@
 }
 
 .green {
-    color:green;
+    color: green;
 }
 
+#editMeal {
+    margin: 10px;
+}

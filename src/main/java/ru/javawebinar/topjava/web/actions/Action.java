@@ -8,4 +8,6 @@ import java.io.Serializable;
 
 public interface Action<T, PK extends Serializable> {
     void execute(Dao<T, PK> dao, HttpServletRequest request, HttpServletResponse response);
+
+
 }

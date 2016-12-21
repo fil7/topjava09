@@ -17,4 +17,10 @@ public class Dates {
     public static String formatLocalDateTime(LocalDateTime localDateTime, String pattern) {
         return localDateTime.format(DateTimeFormatter.ofPattern(pattern));
     }
+
+    public static LocalDateTime toLocalDateTime(String str, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return LocalDateTime.parse(str, formatter);
+    }
+
 }
