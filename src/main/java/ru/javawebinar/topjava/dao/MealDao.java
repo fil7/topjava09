@@ -81,6 +81,7 @@ public class MealDao implements Dao<Meal, Integer> {
             statement.setDate(1, new java.sql.Date(meal.getDate().toEpochDay()));
             statement.setString(2, meal.getDescription());
             statement.setInt(3, meal.getCalories());
+            statement.setInt(4, meal.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.warn("Failed to update Meal: " + meal.getId());
